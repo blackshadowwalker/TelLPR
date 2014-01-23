@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">信帧车牌识别</string>
+    <string name="action_settings">设置</string>
+    <string name="about">关于</string>
+    <string name="exit">退出</string>
+    <string name="result">车牌</string>
+    <string name="btBrowser">选择图片</string>
+    <string name="takePhoto">拍照</string>
+</resources>
