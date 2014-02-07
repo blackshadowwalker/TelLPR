@@ -6,7 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -23,7 +26,7 @@ public class Util {
 	public static final String IMAGE = "image";
 	public static final String VIDEO = "video";
 
-	public static final String BASE_PATH = COMPANY_NAME+"/"+PRODUCTION_NAME;
+	public static final String BASE_PATH = Environment.getExternalStorageDirectory()+"/"+COMPANY_NAME+"/"+PRODUCTION_NAME;
 
 	public static final int TYPE_IMAGE = 1;
 	public static final int TYPE_VIDEO = 2;
@@ -33,11 +36,17 @@ public class Util {
 	public static final int TYPE_TEMP = 6;
 
 	private static Context mContext;  
-	
+
 	public static void init(Context ctx) {  
 		mContext = ctx;  
 	}  
 
+	public static String GetBasePath(){
+		return BASE_PATH;
+	}
+	public static  String GetPlateDir(){
+		return BASE_PATH+"/plates";
+	}
 	// log 
 	public static String GetLogDir(){
 		return BASE_PATH+"/"+LOG;
@@ -92,7 +101,7 @@ public class Util {
 		if (!Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED)) {
 			return  null;
 		}
-		String Path = Environment.getExternalStorageDirectory()+"/"+GetPath(type);//获取跟目录 
+		String Path = GetPath(type);//获取跟目录 
 		File mediaStorageDir = new File(Path);
 		// This location works best if you want the created images to be shared
 		// between applications and persist after your app has been uninstalled.
@@ -145,7 +154,7 @@ public class Util {
 
 	private static File GetFile(int type, String path){
 		File file = null;
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(new Date());
 		switch(type){
 		case TYPE_IMAGE:
 			file = new File(path + File.separator +"IMG_"+ timeStamp + ".jpg");
@@ -167,7 +176,6 @@ public class Util {
 		}
 		return file;
 	}
-
 
 
 
