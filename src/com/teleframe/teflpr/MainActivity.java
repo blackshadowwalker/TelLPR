@@ -147,7 +147,7 @@ public class MainActivity extends Activity {
 		else
 			Debug.startMethodTracing(Util.COMPANY_NAME+"-"+Util.PRODUCTION_NAME); //开启跟踪
 		 */
-		Debug.startNativeTracing();
+		//Debug.startNativeTracing();
 		BaseInit.init(this, this.getApplication());
 
 		updateServiceIntent = new Intent(this, UpdateService.class);
@@ -197,14 +197,13 @@ public class MainActivity extends Activity {
 						loading.dismiss();
 					Update(msg);
 					break;
-				case S.ACTION_CHECK_CRASH:
-
+				case S.ACTION_CHECK_CRASH: // 检测 崩溃日志
 					new Thread(){
 						@Override
 						public void run() {
 							Looper.prepare();
 							try {
-								CheckCrashReport();
+								CustomExceptionHandler.CheckCrashReport();
 								CheckUpdate();
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -363,88 +362,6 @@ public class MainActivity extends Activity {
 			Log.i(TAG, "plate ==null");
 		}
 
-	}
-
-	public void CheckCrashReport(){
-		File file = new File(Util.GetCrashDir());
-		if(file.exists()){
-			String fileNames []= file.list();
-			Log.d(TAG, "fileNames.length="+fileNames.length);
-
-			if(fileNames!=null && fileNames.length>0){
-				//	loading = ProgressDialog.show(mContext, "", mContext.getString(R.string.lastExceptionProcessing), true);
-				Toast.makeText(mContext, mContext.getString(R.string.lastExceptionProcessing), Toast.LENGTH_LONG).show();
-
-
-				String crashfiles [] = new String[fileNames.length];
-				for(int i=0; i<fileNames.length; i++)
-					crashfiles[i] = Util.GetCrashDir()+"/"+fileNames[i];
-
-				SIMCardInfo siminfo = SIMCardInfo.getInstance();
-				String subject = "Crash Report of \""+ mContext.getString(R.string.app_name)+"\" " +
-						"@ Phone: " + siminfo.getNativePhoneNumber()+" ["+siminfo.getProvidersName()+"]";
-
-				StringBuffer bodyText = null;
-
-				if(bodyText==null)
-					bodyText = new StringBuffer();
-				bodyText.append("\n\n");
-
-				Location location= GPS.getLocation();
-				String GPSinfo="";
-				if(location!=null)
-				{
-					GPSinfo = ("latitude="+location.getLatitude()+"&longitude="+location.getLongitude());
-				}
-				String mailto [] =  {S.EMAIL_TO};
-				String cc [] = {};
-				String bcc [] = {};
-
-				try {
-					EmailUtil.getInstance().sendMail(S.EMAIL_HOST, S.EMAIL_FROM, true, 
-							S.EMAIL_USERNAME, S.EMAIL_PASSWORD, 
-							mailto,  cc,  bcc , subject,
-							subject + "\n"+GPSinfo+"\n\n"+bodyText.toString(), crashfiles );
-					bodyText.setLength(0);
-					bodyText = null;
-					for(int i=0; i<fileNames.length; i++){
-						File f =  new File(crashfiles[i]);
-						if(f.canWrite())
-							f.delete();
-						f = null;
-					}
-					//							loading.dismiss();
-
-					Toast.makeText(mContext,"上次的异常处理完成", Toast.LENGTH_LONG).show();
-
-					//							Builder alertDialog = new AlertDialog.Builder(mContext); 
-					//							alertDialog.setTitle("提示");
-					//							alertDialog.setIcon(R.drawable.ic_launcher);
-					//							alertDialog.setMessage("上次的异常处理完成."); 
-					//							alertDialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
-					//								public void onClick(DialogInterface dialog, int which) {
-					//								}
-					//							});
-					//							alertDialog.create(); 
-					//							alertDialog.show(); 
-				} catch (MessagingException e) {
-					//							loading.dismiss();
-					Toast.makeText(mContext,"异常报告发送失败, 下次启动时会再次处理", Toast.LENGTH_LONG).show();
-					e.printStackTrace();
-
-					//							Builder alertDialog = new AlertDialog.Builder(mContext); 
-					//							alertDialog.setTitle("提示");
-					//							alertDialog.setIcon(R.drawable.ic_launcher);
-					//							alertDialog.setMessage("异常报告发送失败, 下次启动时会再次处理"); 
-					//							alertDialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
-					//								public void onClick(DialogInterface dialog, int which) {
-					//								}
-					//							});
-					//							alertDialog.create(); 
-					//							alertDialog.show(); 
-				}
-			}
-		}
 	}
 
 	public void CheckUpdate(){
@@ -729,6 +646,7 @@ public class MainActivity extends Activity {
 
 		switch(item.getItemId()){
 		case R.id.about:
+			//String s = null;	s.getBytes();  //for debug crash report;
 			About();
 			break;
 		case R.id.plateBrowser:
@@ -748,7 +666,7 @@ public class MainActivity extends Activity {
 			}else{
 				toast("车牌库暂无图片");
 			}
-			break;
+			break; 
 		case R.id.exit:
 			android.os.Process.killProcess(android.os.Process.myPid());  
 			System.exit(1);  

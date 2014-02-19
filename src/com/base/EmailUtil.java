@@ -100,7 +100,7 @@ public class EmailUtil extends Authenticator {
 			boolean mailauth,String mailuser,String mailpassword,
 			String [] mailto,String []mailcc, String []mailbcc,  String mailsubject,
 			String mailmessage,String []mailattach) 
-					throws MessagingException {
+					throws Exception {
 		Multipart multipart = new MimeMultipart(); //Multipart对象，邮件内容，标题，附件等内容均添加到其中之后再生成//MimeMessage对象 
 
 		Properties props=new java.util.Properties();    
@@ -164,7 +164,9 @@ public class EmailUtil extends Authenticator {
 		//添加附件
 		if(mailattach != null && mailattach.length>0)
 		{
-			for (int i = 0; i < mailattach.length; i++) {   
+			for (int i = 0; i < mailattach.length; i++) {
+				if(mailattach[i]==null || mailattach[i].isEmpty())
+					continue;
 				MimeBodyPart bp2 = new MimeBodyPart();
 				FileDataSource fileds = new FileDataSource(mailattach[i]);
 				DataHandler dh = new DataHandler(fileds);
@@ -177,7 +179,12 @@ public class EmailUtil extends Authenticator {
 
 		mimeMessage.setContent(multipart);        // send email  
 		mimeMessage.saveChanges();
-		Transport.send(mimeMessage);
+		try{
+			Transport.send(mimeMessage);
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
 		System.out.println("Mail Successfully Sended!");
 		
 		multipart = null;
@@ -229,12 +236,12 @@ public class EmailUtil extends Authenticator {
 			// 这个地方需要改称自己的账号和密码
 			transport.connect(this.host, S.EMAIL_USERNAME, S.EMAIL_PASSWORD);  
 			transport.send(message);  
-			transport.close();   
+			transport.close(); 
 		} catch (Exception e) {
 			throw new RuntimeException();//将此异常向上抛出，此时CrashHandler就能够接收这里抛出的异常并最终将其存放到txt文件中
 			//	        	Log.e("sendmail", e.getMessage());
 		}
-		return false;  
+		return true;  
 	} 
 
 }

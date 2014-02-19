@@ -158,6 +158,8 @@ public class CustomExceptionHandler implements UncaughtExceptionHandler {
 						StringBuffer bodyText = null;
 						if(filePath!=null)
 							bodyText = GetFileCrashContent(filePath);
+						else
+							return ;
 
 						if(bodyText==null)
 							bodyText = new StringBuffer();
@@ -174,24 +176,32 @@ public class CustomExceptionHandler implements UncaughtExceptionHandler {
 						String cc [] = {};
 						String bcc [] = {};
 
+						boolean success = false;
 						try{
-							EmailUtil.getInstance().sendMail(S.EMAIL_HOST, S.EMAIL_FROM, true, 
+							success = EmailUtil.getInstance().sendMail(S.EMAIL_HOST, S.EMAIL_FROM, true, 
 									S.EMAIL_USERNAME, S.EMAIL_PASSWORD, 
 									mailto,  cc,  bcc , subject,
 									subject + "\n"+GPSinfo+"\n\n"+bodyText.toString(), null );
 							bodyText.setLength(0);
 							bodyText = null;
-							File file =  new File(filePath);
-							if(file.canWrite())	
-								file.delete();
-							file = null;
+							String msg = "异常处理完成,即将退出. 请重新启动程序.";
+							if(success)
+							{
+								File file =  new File(filePath);
+								if(file.canWrite())	
+									file.delete();
+								file = null;
+								msg = "异常处理完成,即将退出. 请重新启动程序.";
+							}else{
+								msg = "异常已完成处理,但报告发送失败,即将退出";
+							}
 							//	loading = ProgressDialog.show(mContext, "", "异常处理完成,即将退出.", true);
 							//	Toast.makeText(mContext, "异常处理完成,即将退出.", Toast.LENGTH_LONG).show();  
 
 							Builder alertDialog = new AlertDialog.Builder(mContext); 
 							alertDialog.setTitle("提示");
 							alertDialog.setIcon(R.drawable.ic_launcher);
-							alertDialog.setMessage("异常处理完成,即将退出. 请重新启动程序."); 
+							alertDialog.setMessage(msg); 
 							alertDialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int which) {
 									android.os.Process.killProcess(android.os.Process.myPid());  
@@ -201,21 +211,21 @@ public class CustomExceptionHandler implements UncaughtExceptionHandler {
 							alertDialog.create(); 
 							alertDialog.show(); 
 						}catch(MessagingException e){
-							
-							String fname = saveCrashInfo2File(e); 
-							
-							Builder alertDialog = new AlertDialog.Builder(mContext); 
-							alertDialog.setTitle("提示");
-							alertDialog.setIcon(R.drawable.ic_launcher);
-							alertDialog.setMessage("异常已完成处理,但报告发送失败,即将退出."); 
-							alertDialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int which) {
-									android.os.Process.killProcess(android.os.Process.myPid());  
-									System.exit(1);  
-								}
-							});
-							alertDialog.create(); 
-							alertDialog.show(); 
+						//	String fname = saveCrashInfo2File(e); 
+							if(success==false){
+								Builder alertDialog = new AlertDialog.Builder(mContext); 
+								alertDialog.setTitle("提示");
+								alertDialog.setIcon(R.drawable.ic_launcher);
+								alertDialog.setMessage("异常已完成处理,但报告发送失败,即将退出."); 
+								alertDialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int which) {
+										android.os.Process.killProcess(android.os.Process.myPid());  
+										System.exit(1);  
+									}
+								});
+								alertDialog.create(); 
+								alertDialog.show();
+							}
 						}
 						loading.dismiss();
 
@@ -356,6 +366,105 @@ public class CustomExceptionHandler implements UncaughtExceptionHandler {
 		}  
 		return null;  
 	}  
+	
+	
+	public static void CheckCrashReport(){
+		File file = new File(Util.GetCrashDir());
+		if(file.exists()){
+			String fileNames []= file.list();
+			Log.d(TAG, "fileNames.length="+fileNames.length);
+			if(fileNames!=null && fileNames.length>0){
+				//	loading = ProgressDialog.show(mContext, "", mContext.getString(R.string.lastExceptionProcessing), true);
+				
+				String crashfiles [] = new String[fileNames.length];
+				for(int i=0; i<fileNames.length; i++){
+					if(fileNames[i].endsWith(".log"))
+						crashfiles[i] = Util.GetCrashDir()+"/"+fileNames[i];
+				}
+				int logFileLength = 0;
+				for(int j=0; j<crashfiles.length; j++){
+					if(crashfiles[j]!=null)
+						logFileLength ++;
+				}
+				Log.d(TAG,"crashfiles.length="+logFileLength);
+				if(logFileLength<1)
+					return;
+					
+				Toast.makeText(mContext, mContext.getString(R.string.lastExceptionProcessing), Toast.LENGTH_SHORT).show();
+				Log.d(TAG," start report crash files.");
+				SIMCardInfo siminfo = SIMCardInfo.getInstance();
+				String subject = "Crash Report of \""+ mContext.getString(R.string.app_name)+"\" " +
+						"@ Phone: " + siminfo.getNativePhoneNumber()+" ["+siminfo.getProvidersName()+"]";
+
+				StringBuffer bodyText = null;
+
+				if(bodyText==null)
+					bodyText = new StringBuffer();
+				bodyText.append("\n\n");
+
+				Location location= GPS.getLocation();
+				String GPSinfo="";
+				if(location!=null)
+				{
+					GPSinfo = ("latitude="+location.getLatitude()+"&longitude="+location.getLongitude());
+				}
+				String mailto [] =  {S.EMAIL_TO};
+				String cc [] = {};
+				String bcc [] = {};
+				boolean success = false;
+				try {
+					success = EmailUtil.getInstance().sendMail(S.EMAIL_HOST, S.EMAIL_FROM, true, 
+							S.EMAIL_USERNAME, S.EMAIL_PASSWORD, 
+							mailto,  cc,  bcc , subject,
+							subject + "\n"+GPSinfo+"\n\n"+bodyText.toString(), crashfiles );
+					
+					bodyText.setLength(0);
+					bodyText = null;
+
+					if(success){
+						for(int i=0; i<crashfiles.length; i++){
+							if(crashfiles[i]!=null && !crashfiles[i].isEmpty()){
+								try{
+									File f =  new File(crashfiles[i]);
+									f.delete();
+								}catch(Exception e){ e.printStackTrace(); }
+							}
+						}
+						//loading.dismiss();
+						Toast.makeText(mContext,"异常报告处理(上传)完成", Toast.LENGTH_LONG).show();
+					}else{
+						Toast.makeText(mContext,"异常报告处理(上传)失败", Toast.LENGTH_LONG).show();
+					}
+				//							Builder alertDialog = new AlertDialog.Builder(mContext); 
+					//							alertDialog.setTitle("提示");
+					//							alertDialog.setIcon(R.drawable.ic_launcher);
+					//							alertDialog.setMessage("上次的异常处理完成."); 
+					//							alertDialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+					//								public void onClick(DialogInterface dialog, int which) {
+					//								}
+					//							});
+					//							alertDialog.create(); 
+					//							alertDialog.show(); 
+				} catch (Exception e) {
+					//							loading.dismiss();
+					if(success==false)
+						Toast.makeText(mContext,"异常报告发送失败, 下次启动时会再次处理", Toast.LENGTH_LONG).show();
+					e.printStackTrace();
+
+					//							Builder alertDialog = new AlertDialog.Builder(mContext); 
+					//							alertDialog.setTitle("提示");
+					//							alertDialog.setIcon(R.drawable.ic_launcher);
+					//							alertDialog.setMessage("异常报告发送失败, 下次启动时会再次处理"); 
+					//							alertDialog.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+					//								public void onClick(DialogInterface dialog, int which) {
+					//								}
+					//							});
+					//							alertDialog.create(); 
+					//							alertDialog.show(); 
+				}
+			}
+		}
+	}
 
 
 }  

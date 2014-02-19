@@ -1,27 +1,33 @@
-﻿ Android调用so库（c语言编写） Codeblocks+adt-win-x86+ndk-r9c
-分类： Android 2014-01-23 10:19 70人阅读 评论(0) 收藏 编辑 删除
-Android CC++Android so
-目录(?)[-]
-所需软件环境
-so库开发环境
-Android客户端开发
-环境搭建
-CodeBlocks环境搭建
-Android 开发环境搭建
-SO库编写
-生成头文件
-编写SO库
-Android编写
-Android调用so库, so库是c语言编写
+﻿[log]
+1.修复内存溢出，进一步优化内存使用;
+2.增加系统状态检测;
+3.车牌自动保存到车牌库;
+4.网络状态改变，自动上传崩溃日志;
+
+功能：
+1.车牌识别;
+2.异常崩溃自动报告服务器;
+3.地理位置获取;
+
+[main]
+URL:http://blog.csdn.net/lanmo555/article/details/18698391
+Android调用so库, so库是c语言编写, 在linux 64位系统+ndk(32位)生成 lib*.so (32位)
 
 1. 所需软件环境：
 1）so库开发环境
-操作系统： Ubuntu 10.04  x86
+操作系统： Redhat Server 6.3  x86_64
 
 编译软件：Code::Blocks
 
 Android native开发库：android-ndk-r9c-linux-x86.tar.bz2 
 
+[xxx@www ~]$ uname -a
+Linux www.teleframe.cn 2.6.32-279.el6.x86_64 #1 SMP Wed Jun 13 18:24:36 EDT 2012 x86_64 x86_64 x86_64 GNU/Linux
+[xxx@www ~]$ cat /proc/version
+Linux version 2.6.32-279.el6.x86_64 (mockbuild@x86-008.build.bos.redhat.com) (gcc version 4.4.6 20120305 (Red Hat 4.4.6-4) (GCC) ) #1 SMP Wed Jun 13 18:24:36 EDT 2012
+[xxx@www ~]$ cat /etc/issue
+Red Hat Enterprise Linux Server release 6.3 (Santiago)
+Kernel \r on an \m
 2） Android客户端开发
 操作系统：Windows 7 x86
 
@@ -71,7 +77,7 @@ Code::Blocks  http://www.codeblocks.org/downloads/binaries
 
            S8: 设置 Search directories -> Linker,
 
-[cpp] view plaincopy
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
 /home/xxx/Desktop/android-ndk-r9c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/lib  
 /home/xxx/Desktop/android-ndk-r9c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/lib/gcc/arm-linux-androideabi/4.6  
 /home/xxx/Desktop/android-ndk-r9c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/lib/gcc/arm-linux-androideabi/4.6/armv7-a  
@@ -83,9 +89,11 @@ Code::Blocks  http://www.codeblocks.org/downloads/binaries
 
          S1:  右击项目，选择Build options,  Selected Complier选择刚才设置的那个  GUN ARM GCC Compiler 
 
-         S2:  设置 Search directories -> Linker,  Add : 
+         S2:  Compler settings -> Other options , 写入  -fPIC
 
-[cpp] view plaincopy
+         S3:  设置 Search directories -> Linker,  Add : 
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
 /home/xxx/Desktop/android-ndk-r9c/platforms/android-14/arch-arm/usr/lib  
 
 2）Android 开发环境搭建
@@ -111,7 +119,7 @@ Code::Blocks  http://www.codeblocks.org/downloads/binaries
     
 
 3. SO库编写
-    1）生成头文件
+    3.1）生成头文件
         打开adt-bundle-windows里面的Eclipse
 
         新建Android项目JniTestAndroid ，建立包 com.lpr， 建类  JniTestAndroid
@@ -121,9 +129,9 @@ Code::Blocks  http://www.codeblocks.org/downloads/binaries
 [java] view plaincopy在CODE上查看代码片派生到我的代码片
 package com.lpr;  
 class JniTestAndroid {  
-    public native byte[]  recognition(short arr[]);  
+    public native byte[]  recognition(byte arr[]);  
       static {  
-    System.loadLibrary("JniTestAndroid");//Load  JniTestAndroid.so  
+    System.loadLibrary("AndroidCallsoDemo");//Load  AndroidCallsoDemo.so produce by code::blocks  
     //  System.out.println(System.getProperty("java.library.path"));  
     //  System.setProperty("java.library.path", ".");  
       }  
@@ -150,24 +158,24 @@ extern "C" {
  * Signature: ([S)[B 
  */  
 JNIEXPORT jbyteArray JNICALL Java_com_lpr_JniTestAndroid_recognition  
-  (JNIEnv *, jobject, jshortArray);  
+  (JNIEnv *, jobject, jbyteArray);  
   
 #ifdef __cplusplus  
 }  
 #endif  
 #endif  
-现在将com_lpr_JniTestAndroid.h拷贝到 Ubuntu下面
+现在将com_lpr_JniTestAndroid.h拷贝到 Redhat 下面
 
-并将 $java_home/include/jni.h 和 ./linux/jni_md.h 拷贝到 Ubuntu下面
+并将 $java_home/include/jni.h 和 ./linux/jni_md.h 拷贝到 redhat 下面
 
 在此特给出 jni_md.h 源码
 
-[cpp] view plaincopy
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
 #ifndef _JAVASOFT_JNI_MD_H_  
 #define _JAVASOFT_JNI_MD_H_  
   
-#define JNIEXPORT __declspec(dllexport)  
-#define JNIIMPORT __declspec(dllimport)  
+#define JNIEXPORT  
+#define JNIIMPORT  
 #define JNICALL   
   
 typedef long jint;  
@@ -175,56 +183,164 @@ typedef __int64 jlong;
 typedef signed char jbyte;  
   
 #endif /* !_JAVASOFT_JNI_MD_H_ */  
-       2）编写SO库
-             打开Code::Block新建项目 JniTestAndroid
+      3.2）编写SO库
+             打开Code::Block新建(动态库)项目 AndroidCallsoDemo， 设置项目属性  参考上面的【 1.2  配置项目的环境】
 
              添加 com_lpr_JniTestAndroid.h, jni.h,  jni_md.h 到项目（不添加也可以，只要放到项目的更目录即可）
 
             main.cpp
 
-           
-
-[cpp] view plaincopy
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
 #include "stdio.h"  
 #include "com_lpr_JniTestAndroid.h"  
   
 JNIEXPORT jbyteArray JNICALL Java_com_lpr_JniTestAndroid_recognition  
-  (JNIEnv *jnienv, jobject jobj, jshortArray  shortArray)  
+(JNIEnv *jnienv, jobject jobj, jbyteArray byteArray)  
 {  
-    short*  iArray ; //=new short[maxSize];  
-    jboolean jbool = true;  
-    //转换数组  
-    iArray = jnienv->GetShortArrayElements(shortArray, &jbool);  
-    //...  
-    //  
-    jnienv->ReleaseShortArrayElements(shortArray,iArray,0);  
-    // do something with iArray ...  
-    char carnumber[64]={"北京123456"};  
-    // carnumber;  
-      
+    /*    short*  iArray ; //=new short[maxSize]; 
+        jboolean jbool = true; 
+        //转换数组 
+        iArray = jnienv->GetShortArrayElements(shortArray, &jbool); 
+        //... 
+        // 
+        jnienv->ReleaseShortArrayElements(shortArray,iArray,0); 
+        // do something with iArray ... 
+ 
+ 
+        // carnumber; 
+    */  
+    char carnumber[64]= {"你输入的是:"};  
+  
     jbyteArray  returnLPRArray = jnienv->NewByteArray( 64 );  
-    jbyte *bytes = jnienv->GetByteArrayElements( returnLPRArray, 0);  
-      
-    int nLPRLen = strlen(nLPRLen);  
+    jbyte *retbytes = jnienv->GetByteArrayElements( returnLPRArray, 0);  
+  
+    jbyte *bytes2 = jnienv->GetByteArrayElements(byteArray, 0);  
+  
+    sprintf(carnumber, "%s %s",carnumber, bytes2);  
+  
+    int nLPRLen = strlen(carnumber);  
     //返回值最好是 byte,以免utf8造成汉字的影响  
     for ( int i = 0; i < nLPRLen;  i++ )  
     {  
-        bytes[ i ] = carnumber[ i ];  
+        retbytes[ i ] = carnumber[ i ];  
     }  
   
-    jnienv->SetByteArrayRegion(returnLPRArray, 0, nLPRLen, bytes );  
-      
+    jnienv->SetByteArrayRegion(returnLPRArray, 0, nLPRLen, retbytes );  
+  
     return   returnLPRArray ;  
 }  
             
 
            几点注意：
 
-            1. 如果传入参数或传出参数有汉字或比较复杂的机构，建议都化为 jbyteArray, 特别是有关的汉字问题
+            1. 如果传入参数或传出参数有汉字或比较复杂的结构，建议都化为 jbyteArray, 特别是有关的汉字问题
 
 
 4. Android编写
+  建立android项目 JniTestAndroid
+
+  activity_karl.xml // 
+
+[html] view plaincopy在CODE上查看代码片派生到我的代码片
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    xmlns:tools="http://schemas.android.com/tools"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:background="#F5F6F2"  
+    android:paddingBottom="@dimen/activity_vertical_margin"  
+    android:paddingLeft="@dimen/activity_horizontal_margin"  
+    android:paddingRight="@dimen/activity_horizontal_margin"  
+    android:paddingTop="@dimen/activity_vertical_margin"  
+    tools:context=".KarlActivity" >  
+  
+    <TextView  
+        android:id="@+id/textView"  
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content"  
+        android:gravity="center_horizontal"  
+        android:text="result"  
+        android:textSize="20sp" />  
+  
+  
+    <Button  
+        android:id="@+id/button1"  
+        android:layout_width="match_parent"  
+        android:layout_height="40dp"  
+        android:layout_below="@+id/textView"  
+        android:gravity="center_horizontal"  
+        android:text="Button" />  
+  
+</RelativeLayout>  
+
+ 拷贝  com.lpr.JniTestAndroid  到项目 src 下面
+karlActivity.java
+
+[java] view plaincopy在CODE上查看代码片派生到我的代码片
+package com.karl.jnitestandroid;  
+  
+import android.os.Bundle;  
+import android.app.Activity;  
+import android.view.Menu;  
+import android.view.View;  
+import android.view.View.OnClickListener;  
+import android.widget.Button;  
+import android.widget.TextView;  
+  
+import com.lpr.JniTestAndroid;  
+  
+public class KarlActivity extends Activity {  
+  
+    private JniTestAndroid jni = new JniTestAndroid();  
+    private Button bt;  
+    private TextView textView;  
+    @Override  
+    protected void onCreate(Bundle savedInstanceState) {  
+        super.onCreate(savedInstanceState);  
+        setContentView(R.layout.activity_karl);  
+          
+        textView = (TextView)findViewById(R.id.textView);    
+        bt = (Button) findViewById(R.id.button1);    
+        bt.setOnClickListener(new OnClickListener(){  
+  
+            @Override  
+            public void onClick(View arg0) {  
+                String str="中国北京123ABC";  
+                byte data[] =  jni.recognition(str.getBytes());  
+                String text = new String(data); //new String(data, "GB2312");  
+                textView.setText(text);  
+            }  
+        });  
+    }  
+  
+    @Override  
+    public boolean onCreateOptionsMenu(Menu menu) {  
+        // Inflate the menu; this adds items to the action bar if it is present.  
+        getMenuInflater().inflate(R.menu.karl, menu);  
+        return true;  
+    }  
+  
+}  
+运行结果
+
+
+5.  常见错误
+  5.1)  ld: error: cannot open crtbegin_so.o: No such file or directory
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+arm-linux-androideabi-g++ -Wall -fexceptions  -O2 -fPIC    -I../android-ndk-r9c/platforms/android-14/arch-arm/usr/include  -c main.cpp -o obj/Release/main.o  
+/home/haifeng/android/android-ndk-r9c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/../lib/gcc/arm-linux-androideabi/4.6/../../../../arm-linux-androideabi/bin/as: /lib/libz.so.1: no version information available (required by /home/haifeng/android/android-ndk-r9c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/../lib/gcc/arm-linux-androideabi/4.6/../../../../arm-linux-androideabi/bin/as)  
+arm-linux-androideabi-g++ -shared -L../android-ndk-r9c/platforms/android-14/arch-arm/usr/lib -L/home/haifeng/android/android-ndk-r9c/platforms/android-14/arch-arm/usr/lib  obj/Release/main.o   -o bin/Release/libAndroidCallsoDemo.so -s    
+/home/haifeng/android/android-ndk-r9c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/../lib/gcc/arm-linux-androideabi/4.6/../../../../arm-linux-androideabi/bin/ld: error: cannot open crtbegin_so.o: No such file or directory  
+/home/haifeng/android/android-ndk-r9c/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/../lib/gcc/arm-linux-androideabi/4.6/../../../../arm-linux-androideabi/bin/ld: error: cannot open crtend_so.o: No such file or directory  
+collect2: ld returned 1 exit status  
+
+原因是ld找不到  crtbegin_so.o 和 crteng_so.o, 解决方法是，在项目源码下面建立软连接
+
+cd /home/xxx/android/AndroidCallsoDemo/
+ln -s /home/xxx/android/android-ndk-r9c/platforms/android-14/arch-arm/usr/lib/crtend_so.o ./
+ln -s /home/xxx/android/android-ndk-r9c/platforms/android-14/arch-arm/usr/lib/crtbegin_so.o ./
+
+点此处下载源码
 
 QQ: 1505974441
 
-持续更新中................................[2014.2.12 11:00:00]
+[2014.2.18 14:26:00]
