@@ -1,18 +1,11 @@
 package com.base;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
@@ -22,15 +15,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimeUtility;
-
-import com.teleframe.teflpr.R;
 
 import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Environment;
 
 public class EmailUtil extends Authenticator {

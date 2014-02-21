@@ -1,6 +1,6 @@
 package com.teleframe.base;
 
-import com.base.CustomExceptionHandler;
+import com.base.BaseExceptionHandler;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,7 +40,7 @@ public class ConnectionChangeReceiver extends BroadcastReceiver {
 							Looper.prepare();  
 							try {
 							//	Thread.sleep(10*1000);//
-								CustomExceptionHandler.CheckCrashReport();//发送报告
+								BaseExceptionHandler.CheckCrashReport();//发送报告
 							}catch(Exception e){
 
 							}

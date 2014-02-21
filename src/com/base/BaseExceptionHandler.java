@@ -17,8 +17,6 @@ import java.util.Map;
 
 import javax.mail.MessagingException;
 
-import com.baidu.location.BDLocation;
-import com.teleframe.teflpr.MainActivity;
 import com.teleframe.teflpr.R;
 
 import android.app.ActivityManager;
@@ -32,7 +30,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Debug;
 import android.os.Environment;
@@ -41,12 +38,12 @@ import android.os.Debug.MemoryInfo;
 import android.util.Log;
 import android.widget.Toast;
 
-public class CustomExceptionHandler implements UncaughtExceptionHandler {
+public class BaseExceptionHandler implements UncaughtExceptionHandler {
 
 	private static final String TAG = "Teleframe.TELLPR.CustomExceptionHandler";
 
 	private static UncaughtExceptionHandler mDefaultHandler;
-	private static CustomExceptionHandler INSTANCE = new CustomExceptionHandler();  
+	private static BaseExceptionHandler INSTANCE = new BaseExceptionHandler();  
 	private static Context mContext;  
 	//用来存储设备信息和异常信息   
 	private Map<String, String> infos = new HashMap<String, String>();  
@@ -58,10 +55,10 @@ public class CustomExceptionHandler implements UncaughtExceptionHandler {
 
 	private boolean bOK = true;
 
-	public CustomExceptionHandler() {
+	public BaseExceptionHandler() {
 	}
 
-	public static CustomExceptionHandler getInstance() {  
+	public static BaseExceptionHandler getInstance() {  
 		return INSTANCE;  
 	}  
 

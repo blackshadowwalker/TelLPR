@@ -16,7 +16,7 @@ import javax.mail.MessagingException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.base.CustomExceptionHandler;
+import com.base.BaseExceptionHandler;
 import com.base.EmailUtil;
 import com.base.GPS;
 import com.base.ImageDispose;
@@ -203,7 +203,7 @@ public class MainActivity extends Activity {
 						public void run() {
 							Looper.prepare();
 							try {
-								CustomExceptionHandler.CheckCrashReport();
+								BaseExceptionHandler.CheckCrashReport();
 								CheckUpdate();
 							} catch (Exception e) {
 								e.printStackTrace();

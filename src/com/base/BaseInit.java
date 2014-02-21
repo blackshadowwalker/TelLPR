@@ -18,7 +18,7 @@ public  class BaseInit {
 		GPS.init(c, app);
 		
 	//	if(BuildConfig.DEBUG==false)
-			CustomExceptionHandler.getInstance().init(c);  //传入参数必须为Activity，否则AlertDialog将不显示。
+			BaseExceptionHandler.getInstance().init(c);  //传入参数必须为Activity，否则AlertDialog将不显示。
 	}
 
 }
