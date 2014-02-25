@@ -1,4 +1,4 @@
-﻿[log]
+﻿[main]
 1.修复内存溢出，进一步优化内存使用;
 2.增加系统状态检测;
 3.车牌自动保存到车牌库;
@@ -8,6 +8,8 @@
 1.车牌识别;
 2.异常崩溃自动报告服务器;
 3.地理位置获取;
+
+
 
 [main]
 URL:http://blog.csdn.net/lanmo555/article/details/18698391
@@ -344,3 +346,497 @@ ln -s /home/xxx/android/android-ndk-r9c/platforms/android-14/arch-arm/usr/lib/cr
 QQ: 1505974441
 
 [2014.2.18 14:26:00]
+
+
+
+
+
+
+
+
+[SVN-log]
+
+Revision: 120
+Author: karl.li
+Date: 2014年2月25日 11:10:54
+Message:
+修改图片缩放问题，现在正常使用,并增加签名
+webview.getSettings().setUseWideViewPort(true);
+----
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/Readme.txt
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+Modified : /TelLPR/res/menu/main.xml
+Modified : /TelLPR/res/values/strings.xml
+Added : /TelLPR/sources
+Added : /TelLPR/sources/key
+Modified : /TelLPR/src/com/base/SIMCardInfo.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/src/com/teleframe/teflpr/WebActivity.java
+
+Revision: 114
+Author: karl.li
+Date: 2014年2月21日 14:46:12
+Message:
+Rename CustomExceptionHandler.java 2 BaseExceptionHandler.java
+----
+Added : /TelLPR/src/com/base/BaseExceptionHandler.java
+Modified : /TelLPR/src/com/base/BaseInit.java
+Deleted : /TelLPR/src/com/base/CustomExceptionHandler.java
+Modified : /TelLPR/src/com/base/EmailUtil.java
+Modified : /TelLPR/src/com/teleframe/base/ConnectionChangeReceiver.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+
+Revision: 100
+Author: karl.li
+Date: 2014年2月19日 14:40:03
+Message:
+网络状态改变，自动上传崩溃日志;
+----
+Modified : /TelLPR/src/com/base/CustomExceptionHandler.java
+Modified : /TelLPR/src/com/base/EmailUtil.java
+Added : /TelLPR/src/com/teleframe/base/ConnectionChangeReceiver.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/Readme.txt
+Modified : /TelLPR/res/layout/karl_main.xml
+
+Revision: 90
+Author: karl.li
+Date: 2014年2月7日 21:17:58
+Message:
+
+----
+Added : /TelLPR/.gitattributes
+Added : /TelLPR/.gitignore
+Modified : /TelLPR/project.properties
+
+Revision: 84
+Author: karl.li
+Date: 2014年2月7日 11:16:59
+Message:
+
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+
+Revision: 83
+Author: karl.li
+Date: 2014年2月4日 20:51:23
+Message:
+
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+
+Revision: 82
+Author: karl.li
+Date: 2014年2月4日 17:51:47
+Message:
+更新:
+1.修复内存溢出，进一步优化内存使用;
+2.增加系统状态检测;
+3.车牌自动保存到车牌库;
+
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+Modified : /TelLPR/res/menu/main.xml
+Modified : /TelLPR/res/values/strings.xml
+Added : /TelLPR/src/com/base/FileUtil.java
+Modified : /TelLPR/src/com/base/S.java
+Modified : /TelLPR/src/com/base/Util.java
+Modified : /TelLPR/src/com/lpr/LprService.java
+Added : /TelLPR/src/com/teleframe/teflpr/WebActivity.java
+
+Revision: 81
+Author: karl.li
+Date: 2014年2月4日 0:28:22
+Message:
+修复图片宽大于高造成的调整比例失败的问题
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/src/com/base/S.java
+Modified : /TelLPR/src/com/base/ImageDispose.java
+
+Revision: 80
+Author: karl.li
+Date: 2014年2月3日 23:50:04
+Message:
+Apk.version=1.3.5
+修复:
+1.修复内存溢出，进一步优化内存使用;
+2.增加系统状态检测;
+功能：
+1.车牌识别;
+2.异常崩溃自动报告服务器;
+3.地理位置获取;
+----
+Modified : /TelLPR/src/com/base/CustomExceptionHandler.java
+Modified : /TelLPR/src/com/base/EmailUtil.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+Modified : /TelLPR/res/menu/main.xml
+Modified : /TelLPR/res/values/strings.xml
+Modified : /TelLPR/src/com/base/S.java
+Modified : /TelLPR/src/com/base/Util.java
+Modified : /TelLPR/src/com/lpr/LprService.java
+Modified : /TelLPR/src/com/base/ImageDispose.java
+Modified : /TelLPR/src/com/lpr/LPR.java
+
+Revision: 79
+Author: karl.li
+Date: 2014年1月28日 23:52:36
+Message:
+
+----
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/src/com/teleframe/service/UpdateService.java
+
+Revision: 73
+Author: karl.li
+Date: 2014年1月28日 9:41:57
+Message:
+
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/src/com/base/S.java
+Modified : /TelLPR/src/com/teleframe/service/UpdateService.java
+
+Revision: 71
+Author: karl.li
+Date: 2014年1月27日 18:00:21
+Message:
+
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/src/com/teleframe/service/UpdateService.java
+
+Revision: 70
+Author: karl.li
+Date: 2014年1月27日 17:39:57
+Message:
+这一版本的处理等待比较稳定
+
+new Thread(){
+	@Override
+	public void run() {
+		Looper.prepare();
+		loading = ProgressDialog.show(mContext, "", mContext.getString(R.string.loading_process), true);
+		Looper.loop();
+	}
+}.start();
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/src/com/teleframe/service/UpdateService.java
+
+Revision: 69
+Author: karl.li
+Date: 2014年1月27日 17:18:33
+Message:
+
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+
+Revision: 68
+Author: karl.li
+Date: 2014年1月27日 17:15:30
+Message:
+修复好了分析的时候等待消失的问题，放到new Thread 中就可以了
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+
+Revision: 67
+Author: karl.li
+Date: 2014年1月27日 17:11:01
+Message:
+
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+
+Revision: 66
+Author: karl.li
+Date: 2014年1月27日 17:04:07
+Message:
+stable 
+新增GPS检测和提示开启
+----
+Modified : /TelLPR/src/com/base/CustomExceptionHandler.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/res/layout/karl_main.xml
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+Modified : /TelLPR/res/values/strings.xml
+Modified : /TelLPR/src/com/lpr/LprService.java
+Deleted : /TelLPR/src/com/base/G.java
+Modified : /TelLPR/src/com/base/GPS.java
+Deleted : /TelLPR/src/com/teleframe/view/MyProgressDialog.java
+
+Revision: 65
+Author: karl.li
+Date: 2014年1月27日 16:19:52
+Message:
+百度地图的JAR &  SO
+----
+Added : /TelLPR/libs/activation.jar
+Added : /TelLPR/libs/additionnal.jar
+Added : /TelLPR/libs/baidumapapi_v2_3_5.jar
+Added : /TelLPR/libs/locSDK_4.0.jar
+Added : /TelLPR/libs/mail.jar
+
+Revision: 64
+Author: karl.li
+Date: 2014年1月27日 15:26:43
+Message:
+
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/src/com/teleframe/service/UpdateService.java
+Added : /TelLPR/src/com/baiduapi/BDGPS.java
+Modified : /TelLPR/src/com/baiduapi/MyLocationListener.java
+Modified : /TelLPR/src/com/baiduapi/MySearchListener.java
+
+Revision: 63
+Author: karl.li
+Date: 2014年1月27日 15:24:00
+Message:
+加入了百度的定位SDK，但是由于非GPS定位也不准确(估计是基于网络导致的)，故将在下一个版本只是用内置的GPS
+----
+Modified : /TelLPR/src/com/base/BaseInit.java
+Modified : /TelLPR/src/com/base/CustomExceptionHandler.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/res/layout/karl_main.xml
+Modified : /TelLPR/src/com/teleframe/service/UpdateService.java
+Modified : /TelLPR/src/com/base/GPS.java
+Added : /TelLPR/src/com/baiduapi
+Added : /TelLPR/src/com/baiduapi/MyLocationListener.java
+Added : /TelLPR/src/com/baiduapi/MySearchListener.java
+Added : /TelLPR/src/com/teleframe/teflpr/G.java
+
+Revision: 57
+Author: karl.li
+Date: 2014年1月26日 17:27:43
+Message:
+增加GPS获取
+----
+Modified : /TelLPR/src/com/base/BaseInit.java
+Modified : /TelLPR/src/com/base/CustomExceptionHandler.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/src/com/teleframe/service/UpdateService.java
+Added : /TelLPR/src/com/base/GPS.java
+
+Revision: 56
+Author: karl.li
+Date: 2014年1月26日 16:08:50
+Message:
+新增：
+出现异常时，增加等待处理界面，和处理界面
+----
+Modified : /TelLPR/src/com/base/BaseInit.java
+Modified : /TelLPR/src/com/base/CustomExceptionHandler.java
+Modified : /TelLPR/src/com/base/EmailUtil.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/src/com/lpr/LprService.java
+Modified : /TelLPR/src/com/teleframe/service/UpdateService.java
+Added : /TelLPR/src/com/base/SIMCardInfo.java
+
+Revision: 55
+Author: karl.li
+Date: 2014年1月26日 14:28:55
+Message:
+增加了 Email  发送crash 报告
+----
+Modified : /TelLPR/src/com/base/BaseInit.java
+Modified : /TelLPR/src/com/base/CustomExceptionHandler.java
+Added : /TelLPR/src/com/base/EmailUtil.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/src/com/base/S.java
+Added : /TelLPR/src/com/base/G.java
+Deleted : /TelLPR/src/com/teleframe/base/CustomExceptionHandler.java
+Deleted : /TelLPR/src/com/teleframe/teflpr/ImageDispose.java
+
+Revision: 54
+Author: karl.li
+Date: 2014年1月24日 18:43:19
+Message:
+增加了自动更新的功能
+----
+Modified : /TelLPR/src/com/base/BaseInit.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+Modified : /TelLPR/res/menu/main.xml
+Modified : /TelLPR/res/values/strings.xml
+Modified : /TelLPR/src/com/base/S.java
+Modified : /TelLPR/src/com/lpr/LprService.java
+Added : /TelLPR/src/com/teleframe/service
+Added : /TelLPR/src/com/teleframe/service/UpdateService.java
+Added : /TelLPR/src/com/teleframe/view
+Added : /TelLPR/src/com/teleframe/view/MyProgressDialog.java
+
+Revision: 51
+Author: karl.li
+Date: 2014年1月23日 18:59:11
+Message:
+
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/res/layout/karl_main.xml
+Modified : /TelLPR/src/com/base/S.java
+Modified : /TelLPR/src/com/lpr/LprService.java
+Modified : /TelLPR/src/com/base/ImageDispose.java
+Modified : /TelLPR/src/com/lpr/LPR.java
+
+Revision: 50
+Author: karl.li
+Date: 2014年1月23日 17:59:45
+Message:
+修改成了Service 的形式 ，现在能正常运行
+
+接下来进行bug查找
+----
+Added : /TelLPR/src/com/base
+Added : /TelLPR/src/com/base/BaseInit.java
+Added : /TelLPR/src/com/base/CustomExceptionHandler.java
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Added : /TelLPR/Readme.txt
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+Modified : /TelLPR/res/values/strings.xml
+Added : /TelLPR/src/com/base/S.java
+Added : /TelLPR/src/com/base/Util.java
+Added : /TelLPR/src/com/lpr/LprService.java
+Added : /TelLPR/src/com/base/ImageDispose.java
+Modified : /TelLPR/src/com/lpr/LPR.java
+Modified : /TelLPR/res/values/styles.xml
+Added : /TelLPR/src/com/base/BaseService.java
+
+Revision: 48
+Author: karl.li
+Date: 2014年1月22日 15:28:28
+Message:
+修改了背景颜色和图片位置
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/res/layout/karl_main.xml
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+Modified : /TelLPR/.classpath
+Added : /TelLPR/res/drawable-hdpi/login_welcome_green_btn.9.png
+
+Revision: 47
+Author: karl.li
+Date: 2014年1月22日 10:56:43
+Message:
+stable 识别武警车不正确
+这一版的so修正此问题
+----
+Modified : /TelLPR/libs/armeabi/libTelLPRecognition.so
+Added : /TelLPR/libs/armeabi/libTelLPRecognition.so.stable
+
+Revision: 46
+Author: karl.li
+Date: 2014年1月21日 18:37:20
+Message:
+修复 bug
+
+Failure delivering result ResultInfo{who=null, request=302, result=-1, data=null} to activity 
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+Modified : /TelLPR/res/menu/main.xml
+Modified : /TelLPR/res/values/strings.xml
+
+Revision: 45
+Author: karl.li
+Date: 2014年1月21日 17:12:48
+Message:
+这一版本很稳定
+
+将车牌识别的返回由String修改为byte[]
+----
+Modified : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Modified : /TelLPR/AndroidManifest.xml
+Modified : /TelLPR/gen/com/teleframe/teflpr/R.java
+Modified : /TelLPR/res/menu/main.xml
+Modified : /TelLPR/res/values/strings.xml
+Modified : /TelLPR/src/com/lpr/LPR.java
+Modified : /TelLPR/src/com/teleframe/base/CustomExceptionHandler.java
+Added : /TelLPR/libs/armeabi/libTelLPRecognition.so
+
+Revision: 44
+Author: karl.li
+Date: 2014年1月21日 12:43:19
+Message:
+works well
+----
+Added : /TelLPR/src
+Added : /TelLPR/src/com
+Added : /TelLPR/src/com/teleframe
+Added : /TelLPR/src/com/teleframe/base
+Added : /TelLPR/src/com/teleframe/teflpr
+Added : /TelLPR/src/com/teleframe/teflpr/MainActivity.java
+Added : /TelLPR/AndroidManifest.xml
+Added : /TelLPR/res
+Added : /TelLPR/res/layout
+Added : /TelLPR/res/layout/karl_main.xml
+Added : /TelLPR/project.properties
+Added : /TelLPR/gen
+Added : /TelLPR/gen/com
+Added : /TelLPR/gen/com/teleframe
+Added : /TelLPR/gen/com/teleframe/teflpr
+Added : /TelLPR/gen/com/teleframe/teflpr/R.java
+Added : /TelLPR/res/menu
+Added : /TelLPR/res/menu/main.xml
+Added : /TelLPR/res/values
+Added : /TelLPR/res/values/strings.xml
+Added : /TelLPR/src/com/lpr
+Added : /TelLPR/src/com/lpr/LPR.java
+Added : /TelLPR/libs
+Added : /TelLPR/src/com/teleframe/base/CustomExceptionHandler.java
+Added : /TelLPR/src/com/teleframe/teflpr/ImageDispose.java
+Added : /TelLPR/res/values/styles.xml
+Added : /TelLPR/.classpath
+Added : /TelLPR/res/drawable-hdpi
+Added : /TelLPR/libs/armeabi
+Added : /TelLPR/.project
+Added : /TelLPR/.settings
+Added : /TelLPR/assets
+Added : /TelLPR/gen/com/teleframe/teflpr/BuildConfig.java
+Added : /TelLPR/ic_launcher-web.png
+Added : /TelLPR/libs/android-support-v4.jar
+Added : /TelLPR/lint.xml
+Added : /TelLPR/proguard-project.txt
+Added : /TelLPR/res/drawable-hdpi/ic_launcher.png
+Added : /TelLPR/res/drawable-ldpi
+Added : /TelLPR/res/drawable-mdpi
+Added : /TelLPR/res/drawable-mdpi/ic_launcher.png
+Added : /TelLPR/res/drawable-xhdpi
+Added : /TelLPR/res/drawable-xhdpi/ic_launcher.png
+Added : /TelLPR/res/drawable-xxhdpi
+Added : /TelLPR/res/drawable-xxhdpi/ic_launcher.png
+Added : /TelLPR/res/values/dimens.xml
+Added : /TelLPR/res/values-sw600dp
+Added : /TelLPR/res/values-sw600dp/dimens.xml
+Added : /TelLPR/res/values-sw720dp-land
+Added : /TelLPR/res/values-sw720dp-land/dimens.xml
+Added : /TelLPR/res/values-v11
+Added : /TelLPR/res/values-v11/styles.xml
+Added : /TelLPR/res/values-v14
+Added : /TelLPR/res/values-v14/styles.xml
+
+Revision: 43
+Author: VisualSVN Server
+Date: 2014年1月21日 12:41:46
+Message:
+Created folder 'TelLPR'.
+----
+Added : /TelLPR
+

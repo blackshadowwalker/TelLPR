@@ -1,5 +1,8 @@
 package com.base;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
@@ -19,10 +22,12 @@ public class SIMCardInfo {
 	 * 使用Context.getSystemService(Context.TELEPHONY_SERVICE)来获取这个类的实例。
 	 */
 	private static TelephonyManager telephonyManager;
+	private static Map<String, String> simMap = new  HashMap<String, String>();
+	
 	/**
 	 * 国际移动用户识别码
 	 */
-	private String IMSI;
+	private String IMSI=null;
 	
 	private static SIMCardInfo simCardInfo = null;
 	
@@ -63,7 +68,7 @@ public class SIMCardInfo {
 		// 返回唯一的用户ID;就是这张卡的编号神马的
 		IMSI = telephonyManager.getSubscriberId();
 		// IMSI号前面3位460是国家，紧接着后面2位00 02是中国移动，01是中国联通，03是中国电信。
-		System.out.println(IMSI);
+	//	System.out.println(IMSI);
 		if (IMSI.startsWith("46000") || IMSI.startsWith("46002")) {
 			ProvidersName = "中国移动";
 		} else if (IMSI.startsWith("46001")) {
@@ -72,5 +77,29 @@ public class SIMCardInfo {
 			ProvidersName = "中国电信";
 		}
 		return ProvidersName;
+	}
+	
+	public Map<String, String> getSimMap(){
+		
+		simMap.put("Line1Number", telephonyManager.getLine1Number() );
+		simMap.put("IMSI", telephonyManager.getSubscriberId() );
+		simMap.put("getDeviceId", telephonyManager.getDeviceId());
+		simMap.put("NetworkOperatorName", telephonyManager.getNetworkOperatorName());
+		simMap.put("SimOperatorName", telephonyManager.getSimOperatorName() );
+		simMap.put("SimSerialNumbe", telephonyManager.getSimSerialNumber() );
+		simMap.put("CellLocation", telephonyManager.getCellLocation().toString() );
+		simMap.put("SimCountryIso", telephonyManager.getSimCountryIso() );
+		
+		return simMap;
+	}
+
+	public String getIMSI() {
+		if(IMSI==null)
+			IMSI = telephonyManager.getSubscriberId();
+		return IMSI;
+	}
+
+	public void setIMSI(String iMSI) {
+		IMSI = iMSI;
 	}
 }

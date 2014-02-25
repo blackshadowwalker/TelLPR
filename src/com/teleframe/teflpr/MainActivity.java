@@ -676,7 +676,7 @@ public class MainActivity extends Activity {
 					"正在检测最新版本...", true);
 			startService(updateServiceIntent);
 			break;
-		case R.id.action_settings:
+		case R.id.check_gps:
 			if(checkGPS())
 			{
 				UpdateService.checkVersion();
@@ -691,6 +691,12 @@ public class MainActivity extends Activity {
 			break;
 		case R.id.sysConfig:
 			SysConfig();
+			break;
+		case R.id.action_settings:
+			Intent SetttingIntent = new Intent();
+			SetttingIntent.setClass(MainActivity.this, SettingActivity.class);
+			SetttingIntent.putExtra("url", mImagePath);
+			startActivity(SetttingIntent);
 			break;
 		default:
 			break;
@@ -773,8 +779,8 @@ public class MainActivity extends Activity {
 		}
 		msg += "Copyright @ 2011-2014 Teleframe.\n";
 		msg += "All Rights Reserved.\n";
-		msg += "http://www.teleframe.cn";
-
+		msg += "http://www.teleframe.cn \n\n";
+		
 		Builder alertDialog = new AlertDialog.Builder(this); 
 		alertDialog.setTitle("关于");
 		alertDialog.setIcon(R.drawable.ic_launcher);

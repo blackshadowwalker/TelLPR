@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">信帧车牌识别</string>
-    <string name="action_settings">检测GPS</string>
+    <string name="action_settings">设置</string>
+    <string name="check_gps">检测GPS</string>
     <string name="update">检测新版本</string>
     <string name="platesBrowser">车牌图片库</string>
     <string name="sysConfig">系统状态</string>
@@ -13,5 +14,7 @@
     <string name="takePhoto">拍照</string>
     <string name="loading_process">稍等,正在分析...</string>
     <string name="lastExceptionProcessing">正在处理上次的异常,稍等...</string>
+    <string name="content">...</string>
+    <string name="returnLabel">返回</string>
     
 </resources>

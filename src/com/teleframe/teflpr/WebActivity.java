@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -35,6 +37,8 @@ public class WebActivity extends Activity {
 		//设置缩放 
 		webview.getSettings().setSupportZoom(true);  
 		webview.getSettings().setBuiltInZoomControls(true); 
+		webview.getSettings().setAllowContentAccess(true);
+		webview.getSettings().setUseWideViewPort(true);
 
 		//当前网页的链接仍在webView中跳转
 		webview.setWebViewClient(new WebViewClient() {  
@@ -56,5 +60,21 @@ public class WebActivity extends Activity {
 		//设置Web视图  
 		setContentView(webview);
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == android.R.id.home){
+			this.finish();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override  
+    public boolean onCreateOptionsMenu(Menu menu) {  
+        // Inflate the menu; this adds items to the action bar if it is present.  
+        getMenuInflater().inflate(R.menu.main, menu);  
+        this.getActionBar().setDisplayHomeAsUpEnabled(true);
+        return true;  
+    }  
 
 }
